@@ -19,7 +19,7 @@ export default function App() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/me`, {
+      .get(`${import.meta.env.BACKEND_URL}/api/user/me`, {
         withCredentials: true,
       })
       .then((response) => {

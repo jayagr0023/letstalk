@@ -13,7 +13,7 @@ export default function Sidebar() {
 
   async function handleLogout() {
     try {
-      await axios.get("http://localhost:8080/api/user/logout");
+      await axios.get(`${import.meta.env.BACKEND_URL}/api/user/logout`);
       dispatch(setAuthUser(null));
       dispatch(setOtherUsers(null));
       navigate("/login");

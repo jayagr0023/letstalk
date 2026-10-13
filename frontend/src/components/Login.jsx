@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -19,7 +18,7 @@ export default function Login() {
         event.preventDefault();
         setIsSubmitting(true);
         try {
-            const response = await axios.post("http://localhost:8080/api/user/login", user, {
+            const response = await axios.post(`${import.meta.env.BACKEND_URL}/api/user/login`, user, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             });
