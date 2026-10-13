@@ -4,6 +4,12 @@ import jwt from "jsonwebtoken";
 
 const BCRYPT_SALT_ROUNDS = 12;
 const AUTH_COOKIE_MAX_AGE = 24 * 60 * 60 * 1000;
+const AUTH_COOKIE_OPTIONS = {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+};
 
 export const signup = async (req, res) => {
 
@@ -36,9 +42,8 @@ export const signup = async (req, res) => {
 
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
         return res.status(201).cookie("token", token, {
+            ...AUTH_COOKIE_OPTIONS,
             maxAge: AUTH_COOKIE_MAX_AGE,
-            httpOnly: true,
-            sameSite: "strict",
         }).json({
             message: "User registered successfully",
             user: {
@@ -78,9 +83,8 @@ export const login = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
         return res.status(200).cookie("token", token, {
+            ...AUTH_COOKIE_OPTIONS,
             maxAge: AUTH_COOKIE_MAX_AGE,
-            httpOnly: true,
-            sameSite: "strict",
         }).json({
             message: "Login successful",
             user: {
@@ -101,7 +105,7 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     try {
-        return res.status(200).cookie("token", "", { maxAge: 0, }).json({ message: "Logout successful" });
+        return res.status(200).clearCookie("token", AUTH_COOKIE_OPTIONS).json({ message: "Logout successful" });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message })
@@ -112,13 +116,27 @@ export const getOtherUsers = async (req, res) => {
     try {
         const isLoggedInUser = req.userId;
         const otherUsers = await User.find({ _id: { $ne: isLoggedInUser } }).select("-password");
-        return res.status(200).json({ message: "Other users fetched successfully", otherUsers });
+        const onlineUsers = otherUsers
+            .filter((user) => user.lastActiveAt && Date.now() - user.lastActiveAt.getTime() < 60000)
+            .map((user) => user._id);
+        return res.status(200).json({ message: "Other users fetched successfully", otherUsers, onlineUsers });
 
     } catch (error) {
-        cosole.log(error);
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 }
+
+export const updatePresence = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.userId, { lastActiveAt: new Date() });
+        if (!user) return res.status(404).json({ message: "User not found" });
+        return res.status(204).end();
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
 export const getLoggedInUser = async (req, res) => {
     try {
         const loggedInUser = await User.findById(req.userId).select("-password");

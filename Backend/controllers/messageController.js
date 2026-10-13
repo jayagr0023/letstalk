@@ -1,7 +1,6 @@
 import { Conversation } from "../models/conversationModel.js";
 import { Message } from "../models/messageModel.js";
-import { getReceiverSocketId } from "../socket/socket.js";
-import { io } from "../socket/socket.js";
+import mongoose from "mongoose";
 
 export const sendMessage = async (req, res) => {
     try {
@@ -32,12 +31,6 @@ export const sendMessage = async (req, res) => {
 
         await gotConversation.save();
 
-        // socket io.
-        const receiverSocketId = getReceiverSocketId(recieverId);
-        if (receiverSocketId) {
-            io.to(receiverSocketId).emit("newMessage", newMessage);
-        }
-
         return res.status(200).json({
             success: true,
             message: "Message sent successfully",
@@ -56,10 +49,22 @@ export const getMessage = async (req, res) => {
     try {
         const senderId = req.userId;
         const recieverId = req.params.id;
-        const conversation = await Conversation.findOne({
-            members: { $all: [senderId, recieverId] },
-        }).populate("messages");
-        return res.status(200).json(conversation?.messages ?? []);
+        const query = {
+            $or: [
+                { senderId, recieverId },
+                { senderId: recieverId, recieverId: senderId },
+            ],
+        };
+
+        if (req.query.after) {
+            if (!mongoose.isValidObjectId(req.query.after)) {
+                return res.status(400).json({ message: "Invalid message cursor" });
+            }
+            query._id = { $gt: new mongoose.Types.ObjectId(req.query.after) };
+        }
+
+        const messages = await Message.find(query).sort({ _id: 1 });
+        return res.status(200).json(messages);
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({

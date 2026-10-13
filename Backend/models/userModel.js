@@ -22,6 +22,10 @@ const userModel = new mongoose.Schema({
         required: true,
         enum: ["male", "female", "other"]
     },
+    lastActiveAt: {
+        type: Date,
+        default: null
+    },
 }, { timestamps: true });
 
 export const User = mongoose.model("User", userModel);

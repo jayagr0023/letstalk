@@ -25,7 +25,7 @@ export default function Signup() {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("/api/user/signup", user, {
+      const response = await axios.post(`${import.meta.env.BACKEND_URL}/api/user/signup`, user, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });

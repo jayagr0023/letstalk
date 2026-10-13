@@ -19,7 +19,7 @@ export default function App() {
 
   useEffect(() => {
     axios
-      .get("/api/user/me", {
+      .get(`${import.meta.env.BACKEND_URL}/api/user/me`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -37,7 +37,7 @@ export default function App() {
 
   useEffect(() => {
     if (authUser) {
-      const newSocket = io({
+      const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}`, {
         query: { userId: authUser._id },
       });
       dispatch(setSocket(newSocket));
@@ -49,7 +49,7 @@ export default function App() {
         newSocket.disconnect();
       };
     }
-  }, [authUser, dispatch]);
+  }, [authUser]);
   return (
     <div className="app-shell min-h-screen w-full p-2">
       <div className="relative z-10 flex min-h-[calc(100vh-1rem)] w-full items-center justify-center">

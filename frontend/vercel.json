@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://letstalk-9p4w.vercel.app/api/:path*"
+    }
+  ]
+}
