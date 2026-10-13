@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  color: #e7f1f4;
+  background-color: #08151f;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #08151f;
+  background-image:
+    radial-gradient(circle at 14% 18%, rgba(39, 112, 112, 0.48), transparent 28%),
+    radial-gradient(circle at 86% 12%, rgba(43, 81, 129, 0.52), transparent 34%),
+    radial-gradient(circle at 72% 92%, rgba(31, 101, 92, 0.36), transparent 36%),
+    linear-gradient(135deg, #08151f 0%, #102a38 48%, #12251f 100%);
+  background-size: 125% 125%;
+  animation: atmosphere-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes atmosphere-drift {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+.app-shell::before,
+.app-shell::after {
+  position: absolute;
+  z-index: -1;
+  border-radius: 9999px;
+  content: "";
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.app-shell::before {
+  top: -12rem;
+  left: -8rem;
+  width: 28rem;
+  height: 28rem;
+  background: rgba(68, 160, 151, 0.14);
+}
+
+.app-shell::after {
+  right: -10rem;
+  bottom: -14rem;
+  width: 32rem;
+  height: 32rem;
+  background: rgba(55, 119, 174, 0.16);
+}
