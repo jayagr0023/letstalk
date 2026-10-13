@@ -18,7 +18,7 @@ export default function Login() {
         event.preventDefault();
         setIsSubmitting(true);
         try {
-            const response = await axios.post(`${import.meta.env.BACKEND_URL}/api/user/login`, user, {
+            const response = await axios.post("/api/user/login", user, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             });

@@ -5,30 +5,34 @@ import userRoute from "./routes/userRoute.js";
 import cookieParser from "cookie-parser";
 import messageRoute from "./routes/messageRoute.js";
 import { app ,server} from "./socket/socket.js";
-import cors from "cors";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 dotenv.config();
 
-// const app = express();
+const frontendDist = resolve(dirname(fileURLToPath(import.meta.url)), "../frontend/dist");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-
-const corsOptions = {
-    origin: `${process.env.FRONTEND_URL}`,
-    credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(express.static(frontendDist));
 
 const port = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
-    res.send("<html><body><h1>Welcome to the LetsTalk</h1></body></html>");
-    console.log("API is running...");
+    res.sendFile(resolve(frontendDist, "index.html"));
 });
 
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
+app.get("/{*path}", (req, res, next) => {
+    if (req.path.startsWith("/api/") || req.path.startsWith("/socket.io")) {
+        return next();
+    }
+
+    res.sendFile(resolve(frontendDist, "index.html"), (error) => {
+        if (error) next(error);
+    });
+});
 
 await connectDB();
 server.listen(port, () => {

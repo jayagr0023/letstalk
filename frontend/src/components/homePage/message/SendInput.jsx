@@ -20,7 +20,7 @@ export default function SendInput() {
     setIsSending(true);
     try {
       const response = await axios.post(
-        `${import.meta.env.BACKEND_URL}/api/message/send/${selectedUser._id}`,
+        `/api/message/send/${selectedUser._id}`,
         { message: messageText },
         { withCredentials: true }
       );
