@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import { Server } from "socket.io";
 import http from "http";
+
+dotenv.config();
 
 const app = express();
 

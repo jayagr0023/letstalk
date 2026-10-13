@@ -1,8 +1,4 @@
-import { useSelector } from "react-redux";
-
 export default function Message({ mine, avatar, children, time, read }) {
-  const {authUser} = useSelector((store) => store.user);
-
   if (mine) {
     return (
       <div className="ml-auto flex max-w-[78%] flex-col items-end">

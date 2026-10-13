@@ -10,8 +10,9 @@ export default function useGetOtherUsers() {
     useEffect(() => {
         const fetchOtherUsers = async () => {
             try {
-                axios.defaults.withCredentials = true;
-                const res = await axios.get('http://localhost:8080/api/user');
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user`, {
+                    withCredentials: true,
+                });
                 // console.log('Other users from database:', res.data.otherUsers);
                 dispatch(setOtherUsers(res.data.otherUsers));
             } catch (error) {
@@ -20,6 +21,6 @@ export default function useGetOtherUsers() {
         };
 
         fetchOtherUsers();
-    }, []);
+    }, [dispatch]);
 
 }

@@ -19,7 +19,7 @@ export default function App() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.BACKEND_URL}/api/user/me`, {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/me`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -49,7 +49,7 @@ export default function App() {
         newSocket.disconnect();
       };
     }
-  }, [authUser]);
+  }, [authUser, dispatch]);
   return (
     <div className="app-shell min-h-screen w-full p-2">
       <div className="relative z-10 flex min-h-[calc(100vh-1rem)] w-full items-center justify-center">

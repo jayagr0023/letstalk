@@ -6,7 +6,7 @@ const BCRYPT_SALT_ROUNDS = 12;
 const AUTH_COOKIE_MAX_AGE = 24 * 60 * 60 * 1000;
 const AUTH_COOKIE_OPTIONS = {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
     secure: process.env.NODE_ENV === "production",
     path: "/",
 };

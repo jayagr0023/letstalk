@@ -13,7 +13,9 @@ export default function Sidebar() {
 
   async function handleLogout() {
     try {
-      await axios.get(`${import.meta.env.BACKEND_URL}/api/user/logout`);
+      await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/logout`, {
+        withCredentials: true,
+      });
       dispatch(setAuthUser(null));
       dispatch(setOtherUsers(null));
       navigate("/login");

@@ -1,16 +1,57 @@
-# React + Vite
+# LetsTalk deployment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend is deployed to Vercel and the Express/Socket.IO backend to Render. MongoDB Atlas is used for the database.
 
-Currently, two official plugins are available:
+## Deploy the backend to Render
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Create a Render Web Service from the repository. Set the root directory to `Backend`. The included `render.yaml` configures the build and start commands:
 
-## React Compiler
+- Build command: `npm ci`
+- Start command: `npm start`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Set these environment variables in Render:
 
-## Expanding the ESLint configuration
+| Name | Value |
+| --- | --- |
+| `MONGO_URI` | MongoDB Atlas connection string |
+| `JWT_SECRET` | Long, random secret |
+| `FRONTEND_URL` | Exact deployed Vercel origin, including `https://`, without a trailing slash |
+| `NODE_ENV` | `production` |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Render provides `PORT`. The `/` endpoint returns a health response for Render's health check.
+
+## Deploy the frontend to Vercel
+
+Import the repository into Vercel and set the project root directory to `frontend`. Use:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+- Environment variable `VITE_BACKEND_URL`: the Render service origin, including `https://`, without a trailing slash
+
+Redeploy after changing environment variables because Vite embeds them during the build. The Vercel rewrite serves the app entry point for client-side routes.
+
+## Local development
+
+Create `Backend/.env` with `MONGO_URI`, `JWT_SECRET`, and `FRONTEND_URL=http://localhost:5173`. Create `frontend/.env` with:
+
+```text
+VITE_BACKEND_URL=http://localhost:8080
+```
+
+Run the backend and frontend in separate terminals:
+
+```powershell
+cd Backend
+npm ci
+npm run dev
+```
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+## Production considerations
+
+Authentication cookies use `SameSite=None; Secure` in production because the Vercel and Render default domains are cross-site. HTTPS is required. Some browser privacy settings block third-party cookies; using a custom domain arrangement with frontend and API subdomains under the same registrable domain can avoid that constraint.

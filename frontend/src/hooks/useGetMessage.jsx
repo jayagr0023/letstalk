@@ -21,7 +21,7 @@ export default function useGetMessage() {
         const fetchMessages = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/api/message/${selectedUserId}`,
+                    `${import.meta.env.VITE_BACKEND_URL}/api/message/${selectedUserId}`,
                     { withCredentials: true }
                 );
                 if (isCurrentRequest) {
