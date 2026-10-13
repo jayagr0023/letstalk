@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages } from "../redux/userSlice";
+import { API_URL } from "../utils/api.js";
 
 export default function useGetMessage() {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export default function useGetMessage() {
         const fetchMessages = async () => {
             try {
                 const response = await axios.get(
-                    `${import.meta.env.VITE_BACKEND_URL}/api/message/${selectedUserId}`,
+                    `${API_URL}/api/message/${selectedUserId}`,
                     { withCredentials: true }
                 );
                 if (isCurrentRequest) {

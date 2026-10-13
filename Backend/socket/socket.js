@@ -5,12 +5,14 @@ import http from "http";
 
 dotenv.config();
 
+export const frontendOrigin = process.env.FRONTEND_URL?.replace(/\/+$/, "");
+
 const app = express();
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_URL,
+        origin: frontendOrigin,
         methods: ["GET", "POST"],
         credentials: true,
     },

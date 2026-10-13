@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setSocket } from "./redux/socketSlice.js";
 import { setAuthUser, setOnlineUsers } from "./redux/userSlice.js";
 import axios from "axios";
+import { API_URL } from "./utils/api.js";
 
 export default function App() {
   const { authUser } = useSelector(store => store.user);
@@ -19,7 +20,7 @@ export default function App() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/me`, {
+      .get(`${API_URL}/api/user/me`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -37,7 +38,7 @@ export default function App() {
 
   useEffect(() => {
     if (authUser) {
-      const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}`, {
+      const newSocket = io(API_URL, {
         query: { userId: authUser._id },
       });
       dispatch(setSocket(newSocket));

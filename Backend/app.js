@@ -4,7 +4,7 @@ import connectDB from "./config/db.js";
 import userRoute from "./routes/userRoute.js";
 import cookieParser from "cookie-parser";
 import messageRoute from "./routes/messageRoute.js";
-import { app ,server} from "./socket/socket.js";
+import { app, server, frontendOrigin } from "./socket/socket.js";
 import cors from "cors";
 dotenv.config();
 
@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: frontendOrigin,
     credentials: true,
 }));
 

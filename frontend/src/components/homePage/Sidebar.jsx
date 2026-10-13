@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthUser, setOtherUsers } from "../../redux/userSlice";
 import { useState } from "react";
+import { API_URL } from "../../utils/api.js";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Sidebar() {
 
   async function handleLogout() {
     try {
-      await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/logout`, {
+      await axios.get(`${API_URL}/api/user/logout`, {
         withCredentials: true,
       });
       dispatch(setAuthUser(null));

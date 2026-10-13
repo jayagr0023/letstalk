@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setOtherUsers } from '../redux/userSlice';
+import { API_URL } from "../utils/api.js";
 
 export default function useGetOtherUsers() {
     const dispatch = useDispatch();
@@ -10,7 +11,7 @@ export default function useGetOtherUsers() {
     useEffect(() => {
         const fetchOtherUsers = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user`, {
+                const res = await axios.get(`${API_URL}/api/user`, {
                     withCredentials: true,
                 });
                 // console.log('Other users from database:', res.data.otherUsers);

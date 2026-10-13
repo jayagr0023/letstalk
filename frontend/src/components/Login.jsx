@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from 'react-redux';
 import { setAuthUser } from '../redux/userSlice.js';
+import { API_URL } from "../utils/api.js";
 
 export default function Login() {
     const [user, setUser] = useState({
@@ -18,7 +19,7 @@ export default function Login() {
         event.preventDefault();
         setIsSubmitting(true);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, user, {
+            const response = await axios.post(`${API_URL}/api/user/login`, user, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             });
