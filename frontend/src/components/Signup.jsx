@@ -50,8 +50,31 @@ export default function Signup() {
   }
 
   return (
-    <main className="w-full max-w-xl sm:px-6">
-      <section className="overflow-hidden rounded-4xl border border-white/15 bg-slate-950/55 shadow-2xl shadow-black/30 backdrop-blur-2xl">
+    <main className="grid w-full max-w-6xl items-center gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
+      <aside className="px-2 py-4 text-white sm:px-6 lg:px-4">
+        <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-teal-300/25 bg-teal-300/10 text-teal-200 shadow-lg shadow-teal-950/30" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
+            <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 20a7.5 7.5 0 0 1 15 0M19 7v6M16 10h6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-teal-300">
+          A little closer, every day
+        </p>
+        <h2 className="max-w-lg text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+          Your next great conversation <span className="text-teal-300">starts here.</span>
+        </h2>
+        <p className="mt-5 max-w-md text-base leading-7 text-slate-300">
+          Meet your people on Let&apos;s Talk. Create an account to share a hello, catch up, and keep the moments going.
+        </p>
+        <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+          <p className="text-sm font-semibold text-slate-200">A place for your people</p>
+          <p className="mt-1 text-sm leading-6 text-slate-400">
+            Simple, meaningful conversations are just one sign-up away.
+          </p>
+        </div>
+      </aside>
+
+      <section className="w-full overflow-hidden rounded-4xl border border-white/15 bg-slate-950/55 shadow-2xl shadow-black/30 backdrop-blur-2xl">
         <div className="border-b border-white/10 bg-slate-950/35 px-6 py-8 text-white sm:px-10">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-teal-300">
             Let&apos;s Talk
